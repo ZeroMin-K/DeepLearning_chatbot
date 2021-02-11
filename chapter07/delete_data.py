@@ -4,9 +4,9 @@ db = None
 try:
     db = pymysql.connect(
         host='127.0.0.1',
-        user='homestead',
-        passwd='secret',
-        db='homestead',
+        user='root',
+        passwd='*',
+        db='world',
         charset='utf8'
     )
 
