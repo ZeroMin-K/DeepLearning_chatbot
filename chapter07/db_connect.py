@@ -5,9 +5,9 @@ try:
     # DB 호스트 정보에 맞게 입력
     db = pymysql.connect(
         host='127.0.0.1',
-        user='homestead',
-        passwd='secret',
-        db='homestead',
+        user='root',
+        passwd='*',
+        db='world',
         charset='utf8'
     )
     print('DB 연결 성공')
