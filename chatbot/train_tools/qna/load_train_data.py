@@ -21,14 +21,14 @@ def all_clear_train_data(db):
 
 # db에 데이터 저장
 def insert_data(db, xls_row):
-    intent, ner, query, answer, answer_img_url = xls_row
+    id, intent, ner, query, answer, answer_img_url = xls_row
 
     sql = '''
-        INSERT chatbot_train_data(intent, ner, query, anwer, answer_image)
+        INSERT chatbot_train_data(id, intent, ner, query, answer, answer_image)
         values(
-            '%s', '%s', '%s', '%s', '%s'
+            %d, '%s', '%s', '%s', '%s', '%s'
         )
-    ''' % (intent.value, ner.value, query.value, answer.value, answer_img_url.value0)
+    ''' % (id.value, intent.value, ner.value, query.value, answer.value, answer_img_url.value)
 
     # 엑셀에서 불러온 cell에 데이터가 없는 경우 null로 치환
     sql = sql.replace("'None'", "null")
@@ -38,33 +38,32 @@ def insert_data(db, xls_row):
         print('{} 저장'.format(query.value))
         db.commit()
 
-    train_file = './train_data.xlsx'
-    db = None
-    try:
-        db = pymysql.connect(
-            host=DB_HOST,
-            user=DB_USER,
-            passwd=DB_PASSWORD,
-            db=DB_NAME,
-            charset='utf8'
-        )
+train_file = './train_data.xlsx'
+db = None
+try:
+    db = pymysql.connect(
+        host=DB_HOST,
+        user=DB_USER,
+        passwd=DB_PASSWORD,
+        db=DB_NAME,
+        charset='utf8'
+    )
 
-        # 기존 학습 데이터 초기화
-        all_clear_train_data(db)
+    # 기존 학습 데이터 초기화
+    all_clear_train_data(db)
 
-        # 학습 엑셀 파일 불러오기
-        wb = openpyxl.load_workbook(train_file)
-        sheet = wb['Sheet1']
-        for row in sheet.iter_rows(min_row=2):  # 헤더는 불러오지 않음
-            # 데이터 저장
-            insert_data(db, row)
+    # 학습 엑셀 파일 불러오기
+    wb = openpyxl.load_workbook(train_file)
+    sheet = wb['Sheet1']
+    for row in sheet.iter_rows(min_row=2):  # 헤더는 불러오지 않음
+        # 데이터 저장
+        insert_data(db, row)
 
-        wb.close()
+    wb.close()
 
-    except Exception as e:
-        print(e)
+except Exception as e:
+    print(e)
 
-    finally:
-        if db is not None:
-            db.close()
-
+finally:
+    if db is not None:
+        db.close()
