@@ -13,8 +13,8 @@ try:
 
     # 테이블 생성 sql 정의
     sql = '''
-        CREATE TABLE IF NOT EXISTS 'chatbot_train_data' (
-        `id' INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        CREATE TABLE IF NOT EXISTS `chatbot_train_data` (
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
         `intent` VARCHAR(45) NULL,
         `ner` VARCHAR(1024) NULL,
         `query` TEXT NULL,
