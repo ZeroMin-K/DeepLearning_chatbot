@@ -44,8 +44,14 @@ def query(bot_type):
             return jsonify(ret)
 
         elif bot_type == 'KAKAO':
-            # 카카오톡 처리
-            pass
+            # 카카오톡 스킬 처리
+            body = request.get_json()
+            utterance = body['userRequest']['utterance']
+            ret = get_answer_from_engine(bottype=bot_type, query=utterance)
+
+            from KakaoTemplate import KakaoTemplate
+            skillTemplate = KakaoTemplate()
+            return skillTemplate.send_response(ret)
 
         elif bot_type == 'NAVER':
             # 네이터톡톡 처리
